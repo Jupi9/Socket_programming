@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head><title>WebSocket</title></head>
+  <body>
+    <script>
+      var curr, prev;
+      var t1 = new Date();
+      prev = t1.getTime();
+      var ws = new WebSocket("ws://192.168.107.70:44444/"),
+          messages = document.createElement('ul');
+      ws.onmessage = function (event) {
+        var t2 = new Date();
+        curr = t2.getTime();
+        var diff = curr - prev;
+        prev = curr;
+        var messages = document.getElementsByTagName('ul')[0],
+        message = document.createElement('li'),
+        content = document.createTextNode(event.data + ' ' + diff);
+        
+        if (diff < 2000){
+          message.style.color="red";
+        }
+        else {
+          message.style.color="black";
+        }
+
+        message.appendChild(content);
+        messages.appendChild(message);
+        if (messages.childElementCount > 10){
+          messages.removeChild(messages.firstChild);
+        }
+      };
+/*
+BONUS Kaksi isoo numeroo missä lukee kuinka monta mustaa
+ja punasta numeroa on tullut (laskuri siis) Numeroiden värit musta&punainen
+*/
+      document.body.appendChild(messages);
+    </script>
+  </body>
+</html>
